@@ -9,6 +9,7 @@ Single idempotent default function export which adds loveliness to `Promises`. I
 - `Promise.race`
 - `Promise.map`
 - `Promise.delay`
+- `Promise.deferred`
 - `.finally`
 - `.catchif`
 - `.map`

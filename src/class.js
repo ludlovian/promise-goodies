@@ -38,5 +38,15 @@ export default {
 
   delay (ms, value) {
     return this.resolve(value).delay(ms)
+  },
+
+  deferred () {
+    let resolve
+    let reject
+    const p = new this((_resolve, _reject) => {
+      resolve = _resolve
+      reject = _reject
+    })
+    return Object.assign(p, { resolve, reject })
   }
 }

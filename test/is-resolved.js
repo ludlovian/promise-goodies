@@ -1,9 +1,11 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _isResolved from '../src/is-resolved'
+import _delay from '../src/delay'
 
 delete Promise.prototype.isResolved
-promiseGoodies()
+_isResolved()
+_delay()
 
 test('on pending promise', async t => {
   const p = Promise.resolve().delay(50)

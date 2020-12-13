@@ -1,10 +1,10 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _delay from '../src/delay'
 
 delete Promise.delay
 delete Promise.prototype.delay
-promiseGoodies()
+_delay()
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 

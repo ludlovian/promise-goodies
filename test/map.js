@@ -1,10 +1,12 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _map from '../src/map'
+import _delay from '../src/delay'
 
 delete Promise.prototype.map
 delete Promise.map
-promiseGoodies()
+_map()
+_delay()
 
 test('simple instance iterator', async t => {
   const p = Promise.resolve([1, 2, 3]).map(x => 10 * x)

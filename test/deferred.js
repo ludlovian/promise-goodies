@@ -1,9 +1,11 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _deferred from '../src/deferred'
+import _isResolved from '../src/is-resolved'
 
 delete Promise.deferred
-promiseGoodies()
+_deferred()
+_isResolved()
 
 test('deferred is a promise', async t => {
   const p = Promise.deferred()

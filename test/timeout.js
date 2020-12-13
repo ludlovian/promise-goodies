@@ -1,9 +1,11 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _timeout from '../src/timeout'
+import _delay from '../src/delay'
 
 delete Promise.prototype.timeout
-promiseGoodies()
+_timeout()
+_delay()
 
 test('promise that does not timeout', async t => {
   const v = {}

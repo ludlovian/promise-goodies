@@ -1,9 +1,9 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _catchif from '../src/catchif'
 
 delete Promise.prototype.catchif
-promiseGoodies()
+_catchif()
 
 test('empty object catches', async t => {
   const e = new Error()

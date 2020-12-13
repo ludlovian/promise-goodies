@@ -1,31 +1,29 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _race from '../src/race'
+import _delay from '../src/delay'
 
 delete Promise.race
-promiseGoodies()
+_race()
+_delay()
 
 test('race where first wins', async t => {
-  const p = Promise.race([
-    Promise.resolve(11).delay(10),
-    Promise.resolve(22).delay(20)
-  ])
+  const p = Promise.race([Promise.delay(10, 11), Promise.delay(20, 22)])
   t.is(await p, 11)
 })
 
 test('race where second wins', async t => {
-  const p = Promise.race([
-    Promise.resolve(11).delay(20),
-    Promise.resolve(22).delay(10)
-  ])
+  const p = Promise.race([Promise.delay(20, 11), Promise.delay(10, 22)])
   t.is(await p, 22)
 })
 
 test('race that throws', async t => {
   const e = new Error()
   const p = Promise.race([
-    Promise.resolve(11).delay(20),
-    Promise.reject(e).delay(10)
+    Promise.delay(20, 11),
+    Promise.delay(10).then(() => {
+      throw e
+    })
   ])
   await t.throwsAsync(p, { is: e })
 })

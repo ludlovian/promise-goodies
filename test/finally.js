@@ -1,9 +1,11 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _finally from '../src/finally'
+import _delay from '../src/delay'
 
 delete Promise.prototype.finally
-promiseGoodies()
+_finally()
+_delay()
 
 test('finally on resolved', async t => {
   const v = {}

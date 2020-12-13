@@ -1,15 +1,17 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import _all from '../src/all'
+import _delay from '../src/delay'
 
 delete Promise.all
-promiseGoodies()
+_all()
+_delay()
 
 test('all on array', async t => {
   const p = Promise.all([
-    Promise.resolve(11).delay(30),
-    Promise.resolve(22).delay(10),
-    Promise.resolve(33).delay(20)
+    Promise.delay(30, 11),
+    Promise.delay(10, 22),
+    Promise.delay(20, 33)
   ])
   t.deepEqual(await p, [11, 22, 33])
 })
@@ -22,9 +24,11 @@ test('all on empty array', async t => {
 test('all which rejects', async t => {
   const e = new Error()
   const p = Promise.all([
-    Promise.resolve(11).delay(10),
-    Promise.reject(e).delay(30),
-    Promise.resolve(33).delay(20)
+    Promise.delay(10, 11),
+    Promise.delay(30).then(() => {
+      throw e
+    }),
+    Promise.delay(20, 33)
   ])
   await t.throwsAsync(p, { is: e })
 })

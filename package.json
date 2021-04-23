@@ -1,6 +1,6 @@
 {
   "name": "promise-goodies",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Adds promise goodies",
   "module": "src/index.mjs",
   "main": "src/index.mjs",

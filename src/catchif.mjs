@@ -1,4 +1,4 @@
-import { polyfill, errorMatches } from './util'
+import { polyfill, errorMatches } from './util.mjs'
 
 export default function (P = Promise) {
   polyfill(P.prototype, {

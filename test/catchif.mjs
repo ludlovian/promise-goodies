@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import _catchif from '../src/catchif'
+import _catchif from '../src/catchif.mjs'
 
 delete Promise.prototype.catchif
 _catchif()

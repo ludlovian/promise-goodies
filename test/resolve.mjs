@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import _resolve from '../src/resolve'
+import _resolve from '../src/resolve.mjs'
 
 delete Promise.resolve
 _resolve()

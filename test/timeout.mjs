@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _timeout from '../src/timeout'
-import _delay from '../src/delay'
+import _timeout from '../src/timeout.mjs'
+import _delay from '../src/delay.mjs'
 
 delete Promise.prototype.timeout
 _timeout()

@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _deferred from '../src/deferred'
-import _isResolved from '../src/is-resolved'
+import _deferred from '../src/deferred.mjs'
+import _isResolved from '../src/is-resolved.mjs'
 
 delete Promise.deferred
 _deferred()

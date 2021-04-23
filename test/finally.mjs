@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _finally from '../src/finally'
-import _delay from '../src/delay'
+import _finally from '../src/finally.mjs'
+import _delay from '../src/delay.mjs'
 
 delete Promise.prototype.finally
 _finally()

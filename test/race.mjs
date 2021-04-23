@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _race from '../src/race'
-import _delay from '../src/delay'
+import _race from '../src/race.mjs'
+import _delay from '../src/delay.mjs'
 
 delete Promise.race
 _race()

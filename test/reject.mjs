@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import _reject from '../src/reject'
+import _reject from '../src/reject.mjs'
 
 delete Promise.reject
 _reject()

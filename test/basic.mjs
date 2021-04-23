@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import promiseGoodies from '../src'
+import promiseGoodies from '../src/index.mjs'
 
 delete Promise.resolve
 delete Promise.reject

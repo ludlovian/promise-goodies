@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import _delay from '../src/delay'
+import _delay from '../src/delay.mjs'
 
 delete Promise.delay
 delete Promise.prototype.delay

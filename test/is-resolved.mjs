@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _isResolved from '../src/is-resolved'
-import _delay from '../src/delay'
+import _isResolved from '../src/is-resolved.mjs'
+import _delay from '../src/delay.mjs'
 
 delete Promise.prototype.isResolved
 _isResolved()

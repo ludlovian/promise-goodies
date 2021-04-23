@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _all from '../src/all'
-import _delay from '../src/delay'
+import _all from '../src/all.mjs'
+import _delay from '../src/delay.mjs'
 
 delete Promise.all
 _all()

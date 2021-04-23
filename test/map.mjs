@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import _map from '../src/map'
-import _delay from '../src/delay'
+import _map from '../src/map.mjs'
+import _delay from '../src/delay.mjs'
 
 delete Promise.prototype.map
 delete Promise.map

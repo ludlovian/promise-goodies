@@ -1,4 +1,4 @@
-import { polyfill, getIterator } from './util'
+import { polyfill, getIterator } from './util.mjs'
 
 export default function (P = Promise) {
   polyfill(P.prototype, {

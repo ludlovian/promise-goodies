@@ -1,4 +1,4 @@
-import { polyfill } from './util'
+import { polyfill } from './util.mjs'
 
 export default function (P = Promise) {
   polyfill(P, {

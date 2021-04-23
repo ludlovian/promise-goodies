@@ -5,11 +5,12 @@
   "module": "src/index.mjs",
   "main": "src/index.mjs",
   "source": "src/index.mjs",
+  "type": "module",
   "scripts": {
     "clean": "rm -rf node_modules/.cache/",
     "format": "prettier-standard {src,test}/*.{m,}js",
     "lint": "standard {src,test}/*.{m,}js|snazzy",
-    "test": "nyc ava"
+    "test": "c8 ava"
   },
   "repository": {
     "type": "git",
@@ -21,13 +22,7 @@
     "url": "https://github.com/ludlovian/promise-goodies/issues"
   },
   "homepage": "https://github.com/ludlovian/promise-goodies#readme",
-  "ava": {
-    "require": [
-      "esm"
-    ]
-  },
   "devDependencies": {
-    "ava": "^3.15.0",
-    "esm": "^3.2.25"
+    "ava": "^3.15.0"
   }
 }

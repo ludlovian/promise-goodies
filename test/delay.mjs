@@ -1,4 +1,5 @@
-import test from 'ava'
+import { test } from 'uvu'
+import * as assert from 'uvu/assert'
 
 import _delay from '../src/delay.mjs'
 
@@ -8,20 +9,20 @@ _delay()
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-test('class delay', async t => {
+test('class delay', async () => {
   let resolved = false
   Promise.delay(30).then(() => {
     resolved = true
   })
 
   await wait(10)
-  t.false(resolved)
+  assert.not.ok(resolved)
 
   await wait(40)
-  t.true(resolved)
+  assert.ok(resolved)
 })
 
-test('instance delay', async t => {
+test('instance delay', async () => {
   let resolved = false
   Promise.resolve({})
     .delay(30)
@@ -30,23 +31,26 @@ test('instance delay', async t => {
     })
 
   await wait(10)
-  t.false(resolved)
+  assert.not.ok(resolved)
 
   await wait(40)
-  t.true(resolved)
+  assert.ok(resolved)
 })
 
-test('rejected does not delay', async t => {
+test('rejected does not delay', async () => {
   let rejected = false
-  const e = new Error()
-  const p = Promise.reject(e)
+  const e = new Error('Oops')
+  const start = Date.now()
+  await Promise.reject(e)
     .delay(30)
     .finally(() => {
       rejected = true
     })
+    .then(assert.unreachable, err => assert.is(err, e))
 
-  await wait(10)
-  t.true(rejected)
-
-  await t.throwsAsync(p, { is: e })
+  const end = Date.now()
+  assert.ok(end - start < 30)
+  assert.ok(rejected)
 })
+
+test.run()

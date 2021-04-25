@@ -1,4 +1,5 @@
-import test from 'ava'
+import { test } from 'uvu'
+import * as assert from 'uvu/assert'
 
 import _map from '../src/map.mjs'
 import _delay from '../src/delay.mjs'
@@ -8,17 +9,17 @@ delete Promise.map
 _map()
 _delay()
 
-test('simple instance iterator', async t => {
+test('simple instance iterator', async () => {
   const p = Promise.resolve([1, 2, 3]).map(x => 10 * x)
-  t.deepEqual(await p, [10, 20, 30])
+  assert.equal(await p, [10, 20, 30])
 })
 
-test('simple class iterator', async t => {
+test('simple class iterator', async () => {
   const p = Promise.map([1, 2, 3], x => 10 * x)
-  t.deepEqual(await p, [10, 20, 30])
+  assert.equal(await p, [10, 20, 30])
 })
 
-test('async instance iterator', async t => {
+test('async instance iterator', async () => {
   async function * iter () {
     await Promise.delay(10)
     yield 1
@@ -29,27 +30,27 @@ test('async instance iterator', async t => {
   }
 
   const p = Promise.resolve(iter()).map(x => x * 10)
-  t.deepEqual(await p, [10, 20, 30])
+  assert.equal(await p, [10, 20, 30])
 })
 
-test('async map function', async t => {
+test('async map function', async () => {
   const p = Promise.map([3, 1, 2], async x => {
     await Promise.delay(10 * x)
     return 10 * x
   })
-  t.deepEqual(await p, [30, 10, 20])
+  assert.equal(await p, [30, 10, 20])
 })
 
-test('empty iterable', async t => {
+test('empty iterable', async () => {
   const p = Promise.map([], x => x)
-  t.deepEqual(await p, [])
+  assert.equal(await p, [])
 })
 
-test('concurrency limited', async t => {
+test('concurrency limited', async () => {
   let count = 0
   async function fn (x) {
     count++
-    t.true(count <= 3)
+    assert.ok(count <= 3)
     await Promise.delay(30)
     count--
     return x * 10
@@ -59,14 +60,16 @@ test('concurrency limited', async t => {
     concurrency: 3
   })
 
-  t.deepEqual(result, [0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
+  assert.equal(result, [0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
 })
 
-test('non-iterable', async t => {
-  await t.throwsAsync(() => Promise.map({}, x => x))
+test('non-iterable', async () => {
+  await Promise.map({}, x => x).then(assert.unreachable, err =>
+    assert.instance(err, Error)
+  )
 })
 
-test('iterable that wait before ending', async t => {
+test('iterable that wait before ending', async () => {
   async function * fn () {
     yield 1
     yield 2
@@ -75,7 +78,7 @@ test('iterable that wait before ending', async t => {
   }
 
   const result = await Promise.map(fn(), x => x * 2)
-  t.deepEqual(result, [2, 4, 6])
+  assert.equal(result, [2, 4, 6])
 })
 
 test('mapper that throws', async t => {
@@ -86,5 +89,7 @@ test('mapper that throws', async t => {
     return x * 2
   }
   const p = Promise.resolve([1, 2, 3]).map(fn)
-  await t.throwsAsync(p, { is: e })
+  await p.then(assert.unreachable, err => assert.is(err, e))
 })
+
+test.run()

@@ -1,87 +1,88 @@
-import test from 'ava'
+import { test } from 'uvu'
+import * as assert from 'uvu/assert'
 
 import _catchif from '../src/catchif.mjs'
 
 delete Promise.prototype.catchif
 _catchif()
 
-test('empty object catches', async t => {
+test('empty object catches', async () => {
   const e = new Error()
 
   await Promise.reject(e)
     .catchif({}, err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
-    .catch(t.fail)
+    .catch(assert.unreachable)
 })
 
-test('catches on constructor', async t => {
+test('catches on constructor', async () => {
   class MyError extends Error {}
 
   const e = new MyError()
 
   await Promise.reject(e)
     .catchif(MyError, err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
-    .catch(t.fail)
+    .catch(assert.unreachable)
 })
 
-test('misses on constructor', async t => {
+test('misses on constructor', async () => {
   class MyError extends Error {}
 
   const e = new Error()
 
   await Promise.reject(e)
-    .catchif(MyError, t.fail)
+    .catchif(MyError, assert.unreachable)
     .catch(err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
-    .catch(t.fail)
+    .catch(assert.unreachable)
 })
 
-test('catch on property value', async t => {
+test('catch on property value', async () => {
   const e = new Error()
   e.foo = 'bar'
 
   await Promise.reject(e)
     .catchif({ foo: 'bar' }, err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
-    .catch(t.fail)
+    .catch(assert.unreachable)
 })
 
-test('miss on property value', async t => {
+test('miss on property value', async () => {
   const e = new Error()
   e.foo = 'bar'
   e.baz = 'quux'
 
   await Promise.reject(e)
-    .catchif({ foo: 'bar', baz: 'foobar' }, t.fail)
+    .catchif({ foo: 'bar', baz: 'foobar' }, assert.unreachable)
     .catch(err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
 })
 
-test('catch on property function', async t => {
+test('catch on property function', async () => {
   const e = new Error()
   e.foo = 'bar'
 
   const pred = {
     foo (v) {
-      t.is(v, 'bar')
+      assert.is(v, 'bar')
       return true
     }
   }
 
   await Promise.reject(e)
     .catchif(pred, err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
-    .catch(t.fail)
+    .catch(assert.unreachable)
 })
 
-test('miss on property function', async t => {
+test('miss on property function', async () => {
   const e = new Error()
   e.baz = 'quux'
   e.foo = 'bar'
@@ -89,34 +90,36 @@ test('miss on property function', async t => {
   const pred = {
     baz: 'quux',
     foo (v) {
-      t.is(v, 'bar')
+      assert.is(v, 'bar')
       return false
     }
   }
 
   await Promise.reject(e)
-    .catchif(pred, t.fail)
+    .catchif(pred, assert.unreachable)
     .catch(err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
 })
 
-test('unknown type of predicate', async t => {
+test('unknown type of predicate', async () => {
   const e = new Error()
 
   await Promise.reject(e)
-    .catchif('foobar', t.fail)
+    .catchif('foobar', assert.unreachable)
     .catch(err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
 })
 
-test('non object error', async t => {
+test('non object error', async () => {
   const e = 'foobar'
 
   await Promise.reject(e)
-    .catchif({}, t.fail)
+    .catchif({}, assert.unreachable)
     .catch(err => {
-      t.is(err, e)
+      assert.is(err, e)
     })
 })
+
+test.run()

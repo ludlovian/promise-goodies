@@ -1,4 +1,5 @@
-import test from 'ava'
+import { test } from 'uvu'
+import * as assert from 'uvu/assert'
 
 import _isResolved from '../src/is-resolved.mjs'
 import _delay from '../src/delay.mjs'
@@ -7,24 +8,26 @@ delete Promise.prototype.isResolved
 _isResolved()
 _delay()
 
-test('on pending promise', async t => {
+test('on pending promise', async () => {
   const p = Promise.resolve().delay(50)
-  t.false(await p.isResolved())
+  assert.not.ok(await p.isResolved())
   await p
 })
 
-test('on resolved promise', async t => {
+test('on resolved promise', async () => {
   const p = Promise.resolve()
-  t.true(await p.isResolved())
+  assert.ok(await p.isResolved())
 })
 
-test('with custom time', async t => {
+test('with custom time', async () => {
   const p = Promise.resolve().delay(20)
-  t.true(await p.isResolved(30))
+  assert.ok(await p.isResolved(30))
 })
 
-test('on rejected', async t => {
+test('on rejected', async () => {
   const e = new Error()
   const p = Promise.reject(e)
-  await t.throwsAsync(() => p.isResolved(), { is: e })
+  await p.then(assert.unreachable, err => assert.is(err, e))
 })
+
+test.run()

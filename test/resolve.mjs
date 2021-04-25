@@ -1,4 +1,5 @@
-import test from 'ava'
+import { test } from 'uvu'
+import * as assert from 'uvu/assert'
 
 import _resolve from '../src/resolve.mjs'
 
@@ -8,5 +9,7 @@ _resolve()
 test('resolve works', async t => {
   const value = {}
   const p = Promise.resolve(value)
-  t.is(await p, value)
+  assert.is(await p, value)
 })
+
+test.run()

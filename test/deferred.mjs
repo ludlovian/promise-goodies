@@ -1,4 +1,5 @@
-import test from 'ava'
+import { test } from 'uvu'
+import * as assert from 'uvu/assert'
 
 import _deferred from '../src/deferred.mjs'
 import _isResolved from '../src/is-resolved.mjs'
@@ -7,23 +8,25 @@ delete Promise.deferred
 _deferred()
 _isResolved()
 
-test('deferred is a promise', async t => {
+test('deferred is a promise', async () => {
   const p = Promise.deferred()
-  t.true(p instanceof Promise)
+  assert.ok(p instanceof Promise)
 })
 
-test('resolving', async t => {
+test('resolving', async () => {
   const v = {}
   const p = Promise.deferred()
-  t.false(await p.isResolved())
+  assert.not.ok(await p.isResolved())
   p.resolve(v)
-  t.is(await p, v)
+  assert.is(await p, v)
 })
 
-test('rejecting', async t => {
+test('rejecting', async () => {
   const e = new Error()
   const p = Promise.deferred()
-  t.false(await p.isResolved())
+  assert.not.ok(await p.isResolved())
   p.reject(e)
-  await t.throwsAsync(p, { is: e })
+  await p.then(assert.unreachable, err => assert.is(err, e))
 })
+
+test.run()
